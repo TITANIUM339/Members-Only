@@ -1,0 +1,46 @@
+{
+    "name": "members-only",
+    "version": "1.0.0",
+    "description": "",
+    "main": "./src/app.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "checkFormat": "prettier . --check",
+        "format": "prettier . --write",
+        "lint": "eslint .",
+        "start": "node ./src/app.js",
+        "watch": "node --watch ./src/app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TITANIUM339/Members-Only.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/TITANIUM339/Members-Only/issues"
+    },
+    "homepage": "https://github.com/TITANIUM339/Members-Only#readme",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "connect-pg-simple": "^10.0.0",
+        "dotenv": "^16.4.5",
+        "ejs": "^3.1.10",
+        "express": "^5.0.0",
+        "express-async-handler": "^1.2.0",
+        "express-session": "^1.18.0",
+        "express-validator": "^7.2.0",
+        "passport": "^0.7.0",
+        "passport-local": "^1.0.0",
+        "pg": "^8.12.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.10.0",
+        "eslint": "^9.10.0",
+        "eslint-config-prettier": "^9.1.0",
+        "globals": "^15.9.0",
+        "prettier": "3.3.3"
+    }
+}
