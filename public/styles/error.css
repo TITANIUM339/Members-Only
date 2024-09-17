@@ -1,0 +1,18 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    color: var(--heading);
+}
+
+h1 > span {
+    color: var(--main-theme);
+}
+
+p {
+    color: var(--paragraph);
+}

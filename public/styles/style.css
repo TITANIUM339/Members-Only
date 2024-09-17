@@ -1,0 +1,93 @@
+:root {
+    --border: 1px solid #e4e4e7;
+    --main-theme: #5b21b6;
+    --button-light: #fafafa;
+    --heading: #27272a;
+    --paragraph: #71717a;
+}
+
+body {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
+    font-family: system-ui, sans-serif;
+}
+
+header, main, footer {
+    padding: 20px;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    height: min-content;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    border-bottom: var(--border);
+    background-color: rgba(255, 255, 255, 0.61);
+    backdrop-filter: blur(5px);
+}
+
+:any-link {
+    color: unset;
+    text-decoration: none;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo > a > span {
+    color: var(--main-theme);
+}
+
+nav > ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+    font-size: 1.1rem;
+}
+
+.nav-item > a {
+    display: block;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+}
+
+.nav-item > a:hover {
+    filter: brightness(0.9);
+}
+
+.nav-item > a[href="/log-in"] {
+    background-color: var(--button-light);
+    border: var(--border);
+}
+
+.nav-item > a[href="/sign-up"] {
+    background-color: var(--main-theme);
+    color: white;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+}
+
+footer > :last-child {
+    transition: transform 200ms;
+}
+
+footer > :last-child:hover {
+    transform: scale(1.2);
+}

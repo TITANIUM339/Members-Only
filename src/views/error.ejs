@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+    <%- include("./partials/head.ejs", { styles: "error.css", title: "Error - Members Only" }) %>
+    <body>
+        <%- include("./partials/header.ejs") %>
+        <main>
+            <section>
+                <h1><span><%= error.statusCode %>:</span> <%= error.name %></h1>
+                <p><%= error.message %></p>
+            </section>
+        </main>
+        <%- include("./partials/footer.ejs") %>
+    </body>
+</html>
