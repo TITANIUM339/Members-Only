@@ -21,10 +21,8 @@ app.set("trust proxy", true);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.resolve("public")));
-app.use((req, res, next) => {
-    res.locals.year = new Date().getFullYear();
-    next();
-});
+
+////////// Authentication //////////
 app.use(
     session({
         secret: process.env.COOKIE_SECRET,
@@ -36,8 +34,6 @@ app.use(
         saveUninitialized: false,
     }),
 );
-app.use(passport.session());
-
 passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
@@ -59,7 +55,6 @@ passport.use(
         }
     }),
 );
-
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
@@ -72,9 +67,17 @@ passport.deserializeUser(async (id, done) => {
         done(error);
     }
 });
+app.use(passport.session());
+
+app.use((req, res, next) => {
+    res.locals.year = new Date().getFullYear();
+    res.locals.user = req.user || null;
+    next();
+});
 
 app.use("/", clubsRouter);
 
+////////// Error handling //////////
 app.use((req, res, next) =>
     next(new CustomError("Not Found", "It looks like you are lost.", 404)),
 );

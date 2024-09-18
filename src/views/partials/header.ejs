@@ -4,7 +4,7 @@
     </div>
     <nav>
         <ul>
-            <% if (locals.user) { %>
+            <% if (user) { %>
                 <li class="nav-item">
                     <form action="/log-out" method="POST">
                         <button type="submit">Log out</button>
