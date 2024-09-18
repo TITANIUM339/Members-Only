@@ -3,7 +3,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles/reset.css" />
     <link rel="stylesheet" href="/styles/style.css" />
-    <link rel="stylesheet" href="/styles/<%= styles %>" />
+    <% styles.forEach(style => { %>
+        <link rel="stylesheet" href="/styles/<%= style %>" />
+    <% }); %>
     <link rel="icon" href="/icons/icon.svg" />
     <title><%= title %></title>
 </head>
