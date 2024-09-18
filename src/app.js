@@ -86,6 +86,8 @@ app.use((err, req, res, next) => {
     if (err.statusCode) {
         res.status(err.statusCode).render("error", { error: err });
     } else {
+        console.error(err);
+        
         const error = new CustomError(
             "Internal Server Error",
             "Oops something went wrong!",
