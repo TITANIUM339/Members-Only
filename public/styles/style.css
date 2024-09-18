@@ -13,7 +13,9 @@ body {
     font-family: system-ui, sans-serif;
 }
 
-header, main, footer {
+header,
+main,
+footer {
     padding: 20px;
 }
 
@@ -54,16 +56,6 @@ nav > ul {
     font-size: 1.1rem;
 }
 
-.nav-item > a {
-    display: block;
-    padding: 5px 10px 5px 10px;
-    border-radius: 10px;
-}
-
-.nav-item > a:hover {
-    filter: brightness(0.9);
-}
-
 .nav-item > a[href="/log-in"] {
     background-color: var(--button-light);
     border: var(--border);
@@ -90,4 +82,15 @@ footer > :last-child {
 
 footer > :last-child:hover {
     transform: scale(1.2);
+}
+
+/* General classes */
+.btn {
+    display: block;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+}
+
+.btn:hover {
+    filter: brightness(0.9);
 }
