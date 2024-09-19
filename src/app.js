@@ -10,6 +10,7 @@ import pool from "./models/pool.js";
 import { users } from "./models/queries.js";
 import bcrypt from "bcryptjs";
 import clubsRouter from "./routes/clubs.js";
+import authenticationRouter from "./routes/authentication.js";
 
 const PORT = process.env.PORT || 80;
 
@@ -75,7 +76,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/", clubsRouter);
+app.use(clubsRouter, authenticationRouter);
 
 ////////// Error handling //////////
 app.use((req, res, next) =>
@@ -87,7 +88,7 @@ app.use((err, req, res, next) => {
         res.status(err.statusCode).render("error", { error: err });
     } else {
         console.error(err);
-        
+
         const error = new CustomError(
             "Internal Server Error",
             "Oops something went wrong!",
