@@ -4,6 +4,7 @@
     --button-light: #fafafa;
     --heading: #27272a;
     --paragraph: #71717a;
+    --button-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 body {
@@ -30,7 +31,7 @@ header {
     align-items: center;
     text-align: center;
     border-bottom: var(--border);
-    background-color: rgba(255, 255, 255, 0.61);
+    background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(5px);
 }
 
@@ -64,7 +65,7 @@ nav > ul {
 .nav-item > a[href="/sign-up"] {
     background-color: var(--main-theme);
     color: white;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--button-shadow);
 }
 
 footer {
@@ -93,4 +94,5 @@ footer > :last-child:hover {
 
 .btn:hover {
     filter: brightness(0.9);
+    cursor: pointer;
 }
