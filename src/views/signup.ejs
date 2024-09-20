@@ -10,15 +10,15 @@
                 <form action="/sign-up" method="POST" class="form">
                     <div>
                         <label for="username">Username *</label>
-                        <input type="text" name="username" id="username" maxlength="8" required>
+                        <input type="text" name="username" id="username" maxlength="8" autocomplete="username" required>
                     </div>
                     <div>
                         <label for="first-name">First name *</label>
-                        <input type="text" name="firstName" id="first-name" maxlength="8" required>
+                        <input type="text" name="firstName" id="first-name" maxlength="8" autocomplete="given-name" autocapitalize="on" required>
                     </div>
                     <div>
                         <label for="last-name">Last name *</label>
-                        <input type="text" name="lastName" id="last-name" maxlength="8" required>
+                        <input type="text" name="lastName" id="last-name" maxlength="8" autocomplete="family-name" autocapitalize="on" required>
                     </div>
                     <div>
                         <label for="password">Password *</label>
