@@ -16,6 +16,14 @@ const users = {
 
         return rows[0];
     },
+    async add(username, firstName, lastName, passwordHash, admin) {
+        const { rows } = await pool.query(
+            "INSERT INTO users (username, first_name, last_name, password_hash, admin) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+            [username, firstName, lastName, passwordHash, admin],
+        );
+
+        return rows[0].id;
+    },
 };
 
 const clubs = {
