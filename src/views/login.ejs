@@ -1,0 +1,29 @@
+
+<!doctype html>
+<html lang="en">
+    <%- include("./partials/head.ejs", { styles: ["form.css"], title: "Log in - Members Only" }) %>
+    <body>
+        <%- include("./partials/header.ejs") %>
+        <main>
+            <section class="form-container">
+                <h1>Log in</h1>
+                <form action="/log-in" method="POST" class="form">
+                    <div>
+                        <label for="username">Username *</label>
+                        <input type="text" name="username" id="username" maxlength="8" autocomplete="username" required>
+                    </div>
+                    <div>
+                        <label for="password">Password *</label>
+                        <input type="password" name="password" id="password" required>
+                    </div>
+                    <%- include("./partials/formErrors.ejs") %>
+                    <button type="submit" class="btn">Log in</button>
+                    <p>
+                        Don't have an account? <a href="/sing-up">Sign up</a>
+                    </p>
+                </form>
+            </section>
+        </main>
+        <%- include("./partials/footer.ejs") %>
+    </body>
+</html>

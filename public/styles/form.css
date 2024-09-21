@@ -51,18 +51,18 @@ input {
 }
 
 .errors {
-    color: #b91c1c;
+    color: var(--red);
 }
 
 p {
     text-align: center;
 }
 
-p > a[href="/log-in"] {
+.form > p > a {
     color: var(--main-theme);
     font-weight: 600;
 }
 
-p > a:hover {
+.form > p > a:hover {
     text-decoration: underline;
 }
