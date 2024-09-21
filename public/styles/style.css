@@ -5,6 +5,7 @@
     --heading: #27272a;
     --paragraph: #71717a;
     --button-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    --red: #b91c1c;
 }
 
 body {
@@ -57,8 +58,13 @@ nav > ul {
     font-size: 1.1rem;
 }
 
-.nav-item > a[href="/log-in"],
 form[action="/log-out"] > button {
+    background-color: var(--red);
+    color: white;
+    box-shadow: var(--button-shadow);
+}
+
+.nav-item > a[href="/log-in"] {
     background-color: var(--button-light);
     border: var(--border);
 }
@@ -91,6 +97,7 @@ footer > :last-child:hover {
     display: block;
     padding: 5px 10px 5px 10px;
     border-radius: 10px;
+    border: none;
 }
 
 .btn:hover {

@@ -34,8 +34,6 @@ h1 {
     background-color: var(--main-theme);
     color: white;
     box-shadow: var(--button-shadow);
-    border: none;
-    border-radius: 10px;
 }
 
 label {
