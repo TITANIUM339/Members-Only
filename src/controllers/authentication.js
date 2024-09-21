@@ -52,6 +52,12 @@ const signup = {
     ],
 };
 
+const login = {
+    get(req, res) {
+        res.render("login");
+    },
+};
+
 const logout = {
     post(req, res, next) {
         req.logout((err) => {
@@ -65,4 +71,4 @@ const logout = {
     },
 };
 
-export { signup, logout };
+export { signup, login, logout };
