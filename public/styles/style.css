@@ -57,7 +57,8 @@ nav > ul {
     font-size: 1.1rem;
 }
 
-.nav-item > a[href="/log-in"] {
+.nav-item > a[href="/log-in"],
+form[action="/log-out"] > button {
     background-color: var(--button-light);
     border: var(--border);
 }
