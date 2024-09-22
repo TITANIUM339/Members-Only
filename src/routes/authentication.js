@@ -5,7 +5,7 @@ const router = Router();
 
 router.route("/sign-up").get(signup.get).post(signup.post);
 
-router.route("/log-in").get(login.get);
+router.route("/log-in").get(login.get).post(login.post);
 
 router.post("/log-out", logout.post);
 

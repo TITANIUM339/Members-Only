@@ -3,6 +3,7 @@ import { validationResult, matchedData } from "express-validator";
 import asyncHandler from "express-async-handler";
 import { users } from "../models/queries.js";
 import bcrypt from "bcryptjs";
+import passport from "passport";
 
 const signup = {
     get(req, res) {
@@ -60,6 +61,31 @@ const signup = {
 const login = {
     get(req, res) {
         res.render("login");
+    },
+    post(req, res, next) {
+        passport.authenticate("local", (err, user, info) => {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            if (!user) {
+                res.status(401).render("login", {
+                    errors: [info.message],
+                    username: req.body.username,
+                });
+                return;
+            }
+
+            req.login(user, (err) => {
+                if (err) {
+                    next(err);
+                    return;
+                }
+
+                res.redirect("/");
+            });
+        })(req);
     },
 };
 
