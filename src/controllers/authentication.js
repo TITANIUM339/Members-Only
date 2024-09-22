@@ -14,7 +14,12 @@ const signup = {
             const error = validationResult(req);
 
             if (!error.isEmpty()) {
-                res.status(400).render("signup", { errors: error.array() });
+                res.status(400).render("signup", {
+                    errors: error.array().map((error) => error.msg),
+                    username: req.body.username,
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                });
                 return;
             }
 
