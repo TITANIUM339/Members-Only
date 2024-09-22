@@ -10,7 +10,7 @@
                 <form action="/log-in" method="POST" class="form">
                     <div>
                         <label for="username">Username *</label>
-                        <input type="text" name="username" id="username" maxlength="8" autocomplete="username" required>
+                        <input type="text" name="username" id="username" maxlength="8" autocomplete="username" value="<%= locals.username %>" required>
                     </div>
                     <div>
                         <label for="password">Password *</label>
