@@ -1,38 +1,41 @@
 import { body } from "express-validator";
 import { users } from "../models/queries.js";
 
-function validateName(field, name) {
-    const fieldName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
+function validateName(field, name, maxLength) {
+    const nameCapital = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
 
     return body(field)
         .trim()
-        .customSanitizer((value) => value.replaceAll(/\s+/g, " "))
         .notEmpty()
         .withMessage(`Must provide a ${name}.`)
         .isAlpha()
-        .withMessage(`${fieldName} must be alphabetical.`)
-        .isLength({ max: 8 })
-        .withMessage(`${fieldName} must be within 8 characters.`);
+        .withMessage(`${nameCapital} must be alphabetical.`)
+        .isLength({ max: maxLength })
+        .withMessage(`${nameCapital} must be within ${maxLength} characters.`);
+}
+
+function validateTextInput(field, name, maxLength) {
+    const nameCapital = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
+
+    return body(field)
+        .trim()
+        .notEmpty()
+        .withMessage(`Must provide a ${name}.`)
+        .isAlphanumeric()
+        .withMessage(`${nameCapital} must be alpha-numeric.`)
+        .isLength({ max: maxLength })
+        .withMessage(`${nameCapital} must be within ${maxLength} characters.`);
 }
 
 function validateSignup() {
     return [
-        body("username")
-            .trim()
-            .customSanitizer((value) => value.replaceAll(/\s+/g, " "))
-            .notEmpty()
-            .withMessage("Must provide a username.")
-            .isAlphanumeric()
-            .withMessage("Username must be alpha-numeric.")
-            .isLength({ max: 8 })
-            .withMessage("Username must be within 8 characters.")
-            .custom(async (value) => {
-                if (await users.getByUsername(value)) {
-                    throw new Error("Username already exits.");
-                }
-            }),
-        validateName("firstName", "first name"),
-        validateName("lastName", "last name"),
+        validateTextInput("username", "username", 8).custom(async (value) => {
+            if (await users.getByUsername(value)) {
+                throw new Error("Username already exits.");
+            }
+        }),
+        validateName("firstName", "first name", 8),
+        validateName("lastName", "last name", 8),
         body("password").notEmpty().withMessage("Must provide a password."),
         body("confirmPassword")
             .notEmpty()
