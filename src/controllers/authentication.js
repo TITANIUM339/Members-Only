@@ -41,8 +41,10 @@ const signup = {
 
             const user = {
                 id,
+                username,
                 first_name: firstName,
                 last_name: lastName,
+                password_hash: passwordHash,
                 admin,
             };
 
