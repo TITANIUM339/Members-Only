@@ -59,9 +59,10 @@ nav > ul {
 }
 
 form[action="/log-out"] > button {
-    background-color: var(--red);
-    color: white;
-    box-shadow: var(--button-shadow);
+    background-color: #fef2f2;
+    color: var(--red);
+    border: var(--border);
+    border-color: var(--red);
 }
 
 .nav-item > a[href="/log-in"] {
