@@ -24,6 +24,14 @@ const users = {
 
         return rows[0].id;
     },
+    async isMemberOfClub(userId, clubId) {
+        const { rows } = await pool.query(
+            "SELECT CASE WHEN COUNT(*) = 1 THEN TRUE ELSE FALSE END AS is_member FROM club_members WHERE user_id = $1 AND club_id = $2",
+            [userId, clubId],
+        );
+
+        return rows[0].is_member;
+    },
 };
 
 const clubs = {
