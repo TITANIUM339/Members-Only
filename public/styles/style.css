@@ -6,6 +6,7 @@
     --paragraph: #71717a;
     --button-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     --red: #b91c1c;
+    --button-red: #fef2f2;
 }
 
 body {
@@ -59,7 +60,7 @@ nav > ul {
 }
 
 form[action="/log-out"] > button {
-    background-color: #fef2f2;
+    background-color: var(--button-red);
     color: var(--red);
     border: var(--border);
     border-color: var(--red);
