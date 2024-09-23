@@ -1,0 +1,59 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    margin-top: 40px;
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    gap: 20px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.container > :first-child {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: var(--border);
+    padding-bottom: 10px;
+}
+
+.clubs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.nothing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+h1,
+h2 {
+    color: var(--heading);
+}
+
+h2 {
+    font-size: 1.4rem;
+}
+
+.nothing > section > p {
+    color: var(--paragraph);
+}
+
+a[href="/clubs/new-club"] {
+    border: var(--border);
+    background-color: var(--button-light);
+}
+
+a[href="/clubs/new-club"] > div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.1rem;
+}

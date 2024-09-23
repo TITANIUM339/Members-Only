@@ -1,0 +1,25 @@
+<section class="club">
+    <div class="club-head">
+        <div>
+            <a href="/clubs/<%= club.title %>"><%= club.title %></a>
+        </div>
+        <% if (club.join) { %>
+            <form action="/clubs/<%= club.title %>/join" method="POST">
+                <button type="submit" class="btn" title="Join"><img src="/icons/enter.svg" alt=""></button>
+            </form>
+        <% } %>
+        <% if (club.leave) { %>
+            <form action="/clubs/<%= club.title %>/leave" method="POST">
+                <button type="submit" class="btn" title="Leave"><img src="/icons/exit.svg" alt=""></button>
+            </form>
+        <% } %>
+        <% if (club.delete) { %>
+            <form action="/clubs/<%= club.title %>/delete" method="POST">
+                <button type="submit" class="btn" title="Delete"><img src="/icons/delete.svg" alt=""></button>
+            </form>
+        <% } %>
+    </div>
+    <div class="club-body">
+        <p><%= club.description %></p>
+    </div>
+</section>

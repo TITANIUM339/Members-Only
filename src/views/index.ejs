@@ -1,9 +1,40 @@
 <!doctype html>
 <html lang="en">
-    <%- include("./partials/head.ejs", { styles: "index.css", title: "Members Only" }) %>
+    <%- include("./partials/head.ejs", { styles: ["index.css", "club.css"], title: "Members Only" }) %>
     <body>
         <%- include("./partials/header.ejs") %>
-        <main></main>
+        <main>
+            <section class="container">
+                <div>
+                    <h1>Clubs</h1>
+                    <% if (user) { %>
+                        <a href="/clubs/new-club" class="btn">
+                            <div><img src="/icons/plus.svg" alt="">New club</div>
+                        </a>
+                    <% } %>
+                </div>
+                <div>
+                    <% if (clubs.length) { %>
+                        <div class="clubs">
+                            <% clubs.forEach(club => { %>
+                                <%- include("./partials/club.ejs", { club }) %>
+                            <% }) %>
+                        </div>
+                    <% } else { %>
+                        <div class="nothing">
+                            <section>
+                                <h2>Nothing here yet.</h2>
+                                <% if (user) { %>
+                                    <p>Be the first to create a club! You can create a club by clicking on the "New club" button.</p>
+                                <% } else { %>
+                                    <p>Be the first to create a club! Log in or sign up to create a club.</p>
+                                <% } %>
+                            </section>
+                        </div>
+                    <% } %>
+                </div>
+            </section>
+        </main>
         <%- include("./partials/footer.ejs") %>
     </body>
 </html>

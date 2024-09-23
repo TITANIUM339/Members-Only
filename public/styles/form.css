@@ -40,7 +40,8 @@ label {
     color: #52525b;
 }
 
-input, textarea {
+input,
+textarea {
     border: var(--border);
     border-radius: 10px;
     padding: 5px;
