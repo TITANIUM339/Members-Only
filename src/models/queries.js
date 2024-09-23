@@ -47,6 +47,13 @@ const clubs = {
 
         return rows;
     },
+
+    async add(title, description, password_hash, owner_id) {
+        await pool.query(
+            "INSERT INTO clubs (title, description, password_hash, owner_id) VALUES ($1, $2, $3, $4)",
+            [title, description, password_hash, owner_id],
+        );
+    },
 };
 
 export { users, clubs };
