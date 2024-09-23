@@ -5,6 +5,6 @@ const router = Router();
 
 router.get("/", index.get);
 
-router.route("/clubs/new-club").get(newClub.get);
+router.route("/clubs/new-club").get(newClub.get).post(newClub.post);
 
 export default router;
