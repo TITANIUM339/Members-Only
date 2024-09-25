@@ -27,13 +27,41 @@ function validateTextInput(field, name, maxLength) {
         .withMessage(`${nameCapital} must be within ${maxLength} characters.`);
 }
 
+function getOneTimeNext(next) {
+    let nextCalled = false;
+
+    return (value) => {
+        if (!nextCalled) {
+            nextCalled = true;
+            next(value);
+        }
+    };
+}
+
 function validateSignup() {
     return [
-        validateTextInput("username", "username", 8).custom(async (value) => {
-            if (await users.getByUsername(value)) {
-                throw new Error("Username already exists.");
-            }
-        }),
+        (req, res, next) => {
+            const oneTimeNext = getOneTimeNext(next);
+
+            validateTextInput("username", "username", 8).custom(
+                async (value) => {
+                    let user;
+
+                    // If the database query fails pass the error to oneTimeNext to prevent a subsequent next call by express-validator and avoid undefined behavior.
+                    try {
+                        user = await users.getByUsername(value);
+                    } catch (error) {
+                        oneTimeNext(error);
+                        return;
+                    }
+
+                    // Validate input normally.
+                    if (user) {
+                        throw new Error("Username already exists.");
+                    }
+                },
+            )(req, res, oneTimeNext);
+        },
         validateName("firstName", "first name", 8),
         validateName("lastName", "last name", 8),
         body("password").notEmpty().withMessage("Must provide a password."),
@@ -51,11 +79,24 @@ function validateSignup() {
 
 function validateNewClub() {
     return [
-        validateTextInput("title", "title", 16).custom(async (value) => {
-            if (await clubs.getByName(value)) {
-                throw new Error("Club already exists.");
-            }
-        }),
+        (req, res, next) => {
+            const oneTimeNext = getOneTimeNext(next);
+
+            validateTextInput("title", "title", 16).custom(async (value) => {
+                let club;
+
+                try {
+                    club = await clubs.getByName(value);
+                } catch (error) {
+                    oneTimeNext(error);
+                    return;
+                }
+
+                if (club) {
+                    throw new Error("Club already exists.");
+                }
+            })(req, res, oneTimeNext);
+        },
         body("description")
             .optional()
             .trim()
