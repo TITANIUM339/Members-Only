@@ -15,6 +15,9 @@ main {
 .container > :first-child {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
     border-bottom: var(--border);
     padding-bottom: 10px;
 }
@@ -46,12 +49,12 @@ h2 {
     color: var(--paragraph);
 }
 
-a[href="/clubs/new-club"] {
+.container > :first-child > a {
     border: var(--border);
     background-color: var(--button-light);
 }
 
-a[href="/clubs/new-club"] > div {
+.container > :first-child > a > div {
     display: flex;
     align-items: center;
     gap: 5px;

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+    <%- include("./partials/head.ejs", { styles: ["index.css"], title: `${clubTitle} - Members Only` }) %>
+    <body>
+        <%- include("./partials/header.ejs") %>
+        <main>
+            <section class="container">
+                <div>
+                    <h1><%= clubTitle %></h1>
+                    <% if (hasClubAccess) { %>
+                        <a href="/clubs/<%= clubTitle %>/new-message" class="btn">
+                            <div><img src="/icons/plus.svg" alt="">New message</div>
+                        </a>
+                    <% } %>
+                </div>
+                <div>
+                    <% if (messages.length) { %>
+                        <div class="messges">
+                            <% messages.forEach(message => { %>
+                                <section class="message">
+                                    <div class="message-head">
+                                        <div>
+                                            <h2><%= message.title %></h2>
+                                            <% if (hasClubAccess) { %>
+                                                <p>- <%= message.date %>, <%= message.location %>, <%= user.firstName %> <%= user.lastName %></p>
+                                            <% } %>
+                                        </div>
+                                        <% if (message.delete) { %>
+                                            <form action="/clubs/<%= clubTitle %>/messages/<%= message.id %>/delete" method="POST">
+                                                <button type="submit" class="btn" title="Delete"><img src="/icons/delete.svg" alt=""></button>
+                                            </form>
+                                        <% } %>
+                                    </div>
+                                    <div class="message-body">
+                                        <p><%= message.message %></p>
+                                    </div>
+                                </section>
+                            <% }) %>
+                        </div>
+                    <% } else { %>
+                        <div class="nothing">
+                            <section>
+                                <h2>Nothing here yet.</h2>
+                                <% if (hasClubAccess) { %>
+                                    <p>Be the first to post a message in this club! You can post a message by clicking on the "New message" button.</p>
+                                <% } else if (user) { %>
+                                    <p>Be the first to post a message in this club! Join the club to post a message.</p>
+                                <% } else {%>
+                                    <p>Be the first to post a message in this club! Log in or sign up to join this club.</p>
+                                <% } %>
+                            </section>
+                        </div>
+                    <% } %>
+                </div>
+            </section>
+        </main>
+        <%- include("./partials/footer.ejs") %>
+    </body>
+</html>
