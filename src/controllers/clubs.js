@@ -3,6 +3,7 @@ import { validateNewClub } from "../helpers/validation.js";
 import { clubs, messages, users } from "../models/queries.js";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
+import CustomError from "../helpers/customError.js";
 
 function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -45,7 +46,7 @@ function isUserMessageDeleteAllowed(user, message, club) {
     if (!user) {
         return;
     }
-    
+
     return (
         user.admin || user.id === club.owner_id || user.id === message.user_id
     );
@@ -128,4 +129,26 @@ const club = {
     }),
 };
 
-export { index, newClub, club };
+const newMessage = {
+    get: [
+        isAuthenticated,
+        asyncHandler(async (req, res) => {
+            if (
+                !(await isUserClubAccessAllowed(
+                    req.user,
+                    await clubs.getByTitle(res.locals.clubTitle),
+                ))
+            ) {
+                throw new CustomError(
+                    "Forbidden",
+                    "What do you think you are doing?",
+                    403,
+                );
+            }
+
+            res.render("newMessage");
+        }),
+    ],
+};
+
+export { index, newClub, club, newMessage };

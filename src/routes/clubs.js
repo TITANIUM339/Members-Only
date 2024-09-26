@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { club, index, newClub } from "../controllers/clubs.js";
+import { club, index, newClub, newMessage } from "../controllers/clubs.js";
 import { validateClubRoute } from "../helpers/validation.js";
 import { matchedData, validationResult } from "express-validator";
 
@@ -25,5 +25,7 @@ router.use("/clubs/:clubTitle", validateClubRoute(), (req, res, next) => {
 });
 
 router.get("/clubs/:clubTitle", club.get);
+
+router.route("/clubs/:clubTitle/new-message").get(newMessage.get);
 
 export default router;
