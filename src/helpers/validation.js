@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { clubs, users } from "../models/queries.js";
 
 function validateName(field, name, maxLength) {
@@ -107,4 +107,25 @@ function validateNewClub() {
     ];
 }
 
-export { validateSignup, validateNewClub };
+function validateClubRoute() {
+    return (req, res, next) => {
+        const oneTimeNext = getOneTimeNext(next);
+
+        param("clubTitle").custom(async (value) => {
+            let club;
+
+            try {
+                club = await clubs.getByTitle(value);
+            } catch (error) {
+                oneTimeNext(error);
+                return;
+            }
+
+            if (!club) {
+                throw new Error("Club does not exist.");
+            }
+        })(req, res, oneTimeNext);
+    };
+}
+
+export { validateSignup, validateNewClub, validateClubRoute };
