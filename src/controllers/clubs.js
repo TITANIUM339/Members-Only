@@ -1,6 +1,6 @@
 import { matchedData, validationResult } from "express-validator";
 import { validateNewClub } from "../helpers/validation.js";
-import { clubs, users } from "../models/queries.js";
+import { clubs, messages, users } from "../models/queries.js";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 
@@ -27,6 +27,28 @@ async function isUserClubActionAllowed(user, club, action) {
         case "leave":
             return await users.isMemberOfClub(user.id, club.id);
     }
+}
+
+async function isUserClubAccessAllowed(user, club) {
+    if (!user) {
+        return;
+    }
+
+    return (
+        user.admin ||
+        user.id === club.owner_id ||
+        (await users.isMemberOfClub())
+    );
+}
+
+function isUserMessageDeleteAllowed(user, message, club) {
+    if (!user) {
+        return;
+    }
+    
+    return (
+        user.admin || user.id === club.owner_id || user.id === message.user_id
+    );
 }
 
 const index = {
@@ -85,4 +107,25 @@ const newClub = {
     ],
 };
 
-export { index, newClub };
+const club = {
+    get: asyncHandler(async (req, res) => {
+        const club = await clubs.getByTitle(res.locals.clubTitle);
+
+        res.render("messages", {
+            hasClubAccess: await isUserClubAccessAllowed(req.user, club),
+            messages: (await messages.getByClubTitle(res.locals.clubTitle)).map(
+                (message) => {
+                    message.delete = isUserMessageDeleteAllowed(
+                        req.user,
+                        message,
+                        club,
+                    );
+
+                    return message;
+                },
+            ),
+        });
+    }),
+};
+
+export { index, newClub, club };
