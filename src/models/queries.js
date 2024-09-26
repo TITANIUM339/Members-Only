@@ -64,4 +64,15 @@ const clubs = {
     },
 };
 
-export { users, clubs };
+const messages = {
+    async getByClubTitle(clubTitle) {
+        const { rows } = await pool.query(
+            "SELECT * FROM messages WHERE club_id = (SELECT id FROM clubs WHERE title = $1)",
+            [clubTitle],
+        );
+
+        return rows;
+    },
+};
+
+export { users, clubs, messages };
