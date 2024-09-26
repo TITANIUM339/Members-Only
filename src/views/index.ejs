@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-    <%- include("./partials/head.ejs", { styles: ["index.css", "club.css"], title: "Members Only" }) %>
+    <%- include("./partials/head.ejs", { styles: ["index.css"], title: "Members Only" }) %>
     <body>
         <%- include("./partials/header.ejs") %>
         <main>
@@ -17,7 +17,31 @@
                     <% if (clubs.length) { %>
                         <div class="clubs">
                             <% clubs.forEach(club => { %>
-                                <%- include("./partials/club.ejs", { club }) %>
+                                <section class="club">
+                                    <div class="club-head">
+                                        <div>
+                                            <a href="/clubs/<%= club.title %>"><%= club.title %></a>
+                                        </div>
+                                        <% if (club.join) { %>
+                                            <form action="/clubs/<%= club.title %>/join" method="POST">
+                                                <button type="submit" class="btn" title="Join"><img src="/icons/enter.svg" alt=""></button>
+                                            </form>
+                                        <% } %>
+                                        <% if (club.leave) { %>
+                                            <form action="/clubs/<%= club.title %>/leave" method="POST">
+                                                <button type="submit" class="btn" title="Leave"><img src="/icons/exit.svg" alt=""></button>
+                                            </form>
+                                        <% } %>
+                                        <% if (club.delete) { %>
+                                            <form action="/clubs/<%= club.title %>/delete" method="POST">
+                                                <button type="submit" class="btn" title="Delete"><img src="/icons/delete.svg" alt=""></button>
+                                            </form>
+                                        <% } %>
+                                    </div>
+                                    <div class="club-body">
+                                        <p><%= club.description %></p>
+                                    </div>
+                                </section>
                             <% }) %>
                         </div>
                     <% } else { %>
