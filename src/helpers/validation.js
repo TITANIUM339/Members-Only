@@ -86,7 +86,7 @@ function validateNewClub() {
                 let club;
 
                 try {
-                    club = await clubs.getByName(value);
+                    club = await clubs.getByTitle(value);
                 } catch (error) {
                     oneTimeNext(error);
                     return;

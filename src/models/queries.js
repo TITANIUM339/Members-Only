@@ -42,7 +42,7 @@ const clubs = {
 
         return rows[0];
     },
-    async getByName(title) {
+    async getByTitle(title) {
         const { rows } = await pool.query(
             "SELECT * FROM clubs WHERE title = $1",
             [title],
