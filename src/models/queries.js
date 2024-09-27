@@ -73,6 +73,13 @@ const messages = {
 
         return rows;
     },
+
+    async add(title, message, date, location, user_id, club_id) {
+        await pool.query(
+            "INSERT INTO messages (title, message, date, location, user_id, club_id) VALUES ($1, $2, $3, $4, $5, $6)",
+            [title, message, date, location, user_id, club_id],
+        );
+    },
 };
 
 export { users, clubs, messages };
