@@ -52,6 +52,23 @@ function isUserMessageDeleteAllowed(user, message, club) {
     );
 }
 
+const checkClubAccess = asyncHandler(async (req, res, next) => {
+    if (
+        !(await isUserClubAccessAllowed(
+            req.user,
+            await clubs.getByTitle(res.locals.clubTitle),
+        ))
+    ) {
+        throw new CustomError(
+            "Forbidden",
+            "What do you think you are doing?",
+            403,
+        );
+    }
+
+    next();
+});
+
 const index = {
     get: asyncHandler(async (req, res) => {
         res.render("index", {
@@ -132,22 +149,10 @@ const club = {
 const newMessage = {
     get: [
         isAuthenticated,
-        asyncHandler(async (req, res) => {
-            if (
-                !(await isUserClubAccessAllowed(
-                    req.user,
-                    await clubs.getByTitle(res.locals.clubTitle),
-                ))
-            ) {
-                throw new CustomError(
-                    "Forbidden",
-                    "What do you think you are doing?",
-                    403,
-                );
-            }
-
+        checkClubAccess,
+        (req, res) => {
             res.render("newMessage");
-        }),
+        },
     ],
 };
 
