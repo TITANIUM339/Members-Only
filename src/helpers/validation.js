@@ -128,4 +128,20 @@ function validateClubRoute() {
     };
 }
 
-export { validateSignup, validateNewClub, validateClubRoute };
+function validateNewMessage() {
+    return [
+        validateTextInput("title", "title", 16),
+        body("message")
+            .trim()
+            .customSanitizer((value) => value.replaceAll(/\s+/g, " "))
+            .notEmpty()
+            .withMessage("Must provide a message."),
+    ];
+}
+
+export {
+    validateSignup,
+    validateNewClub,
+    validateClubRoute,
+    validateNewMessage,
+};
