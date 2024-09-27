@@ -26,6 +26,9 @@ router.use("/clubs/:clubTitle", validateClubRoute(), (req, res, next) => {
 
 router.get("/clubs/:clubTitle", club.get);
 
-router.route("/clubs/:clubTitle/new-message").get(newMessage.get);
+router
+    .route("/clubs/:clubTitle/new-message")
+    .get(newMessage.get)
+    .post(newMessage.post);
 
 export default router;

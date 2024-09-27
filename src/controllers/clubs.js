@@ -1,9 +1,10 @@
 import { matchedData, validationResult } from "express-validator";
-import { validateNewClub } from "../helpers/validation.js";
+import { validateNewClub, validateNewMessage } from "../helpers/validation.js";
 import { clubs, messages, users } from "../models/queries.js";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import CustomError from "../helpers/customError.js";
+import { UTCDate } from "@date-fns/utc";
 
 function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -153,6 +154,49 @@ const newMessage = {
         (req, res) => {
             res.render("newMessage");
         },
+    ],
+    post: [
+        isAuthenticated,
+        checkClubAccess,
+        validateNewMessage(),
+        asyncHandler(async (req, res) => {
+            const error = validationResult(req);
+
+            if (!error.isEmpty()) {
+                res.status(400).render("newMessage", {
+                    errors: error.array().map((error) => error.msg),
+                    title: req.body.title,
+                    message: req.body.message,
+                });
+                return;
+            }
+
+            const { country, city } = await (
+                await fetch(
+                    `http://ip-api.com/json/${req.ip}?fields=country,city`,
+                )
+            ).json();
+
+            const location =
+                country || city
+                    ? `${country || ""} ${city || ""}`.trimEnd()
+                    : "Unknown";
+
+            const { id: clubId } = await clubs.getByTitle(res.locals.clubTitle);
+
+            const { title, message } = matchedData(req);
+
+            await messages.add(
+                title,
+                message,
+                new UTCDate(),
+                location,
+                req.user.id,
+                clubId,
+            );
+
+            res.redirect(`/clubs/${res.locals.clubTitle}`);
+        }),
     ],
 };
 
