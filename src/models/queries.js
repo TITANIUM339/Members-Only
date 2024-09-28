@@ -55,7 +55,6 @@ const clubs = {
 
         return rows;
     },
-
     async add(title, description, password_hash, owner_id) {
         await pool.query(
             "INSERT INTO clubs (title, description, password_hash, owner_id) VALUES ($1, $2, $3, $4)",
@@ -67,13 +66,12 @@ const clubs = {
 const messages = {
     async getByClubTitle(clubTitle) {
         const { rows } = await pool.query(
-            "SELECT * FROM messages WHERE club_id = (SELECT id FROM clubs WHERE title = $1)",
+            "SELECT * FROM messages WHERE club_id = (SELECT id FROM clubs WHERE title = $1) ORDER BY date DESC",
             [clubTitle],
         );
 
         return rows;
     },
-
     async add(title, message, date, location, user_id, club_id) {
         await pool.query(
             "INSERT INTO messages (title, message, date, location, user_id, club_id) VALUES ($1, $2, $3, $4, $5, $6)",
