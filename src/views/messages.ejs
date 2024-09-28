@@ -15,20 +15,24 @@
                 </div>
                 <div>
                     <% if (messages.length) { %>
-                        <div class="messges">
+                        <div class="messages">
                             <% messages.forEach(message => { %>
                                 <section class="message">
                                     <div class="message-head">
                                         <div>
                                             <h2><%= message.title %></h2>
-                                            <% if (hasClubAccess) { %>
-                                                <p>- <%= message.date %>, <%= message.location %>, <%= user.firstName %> <%= user.lastName %></p>
+                                            <% if (message.delete) { %>
+                                                <form action="/clubs/<%= clubTitle %>/messages/<%= message.id %>/delete" method="POST">
+                                                    <button type="submit" class="btn" title="Delete"><img src="/icons/delete.svg" alt=""></button>
+                                                </form>
                                             <% } %>
                                         </div>
-                                        <% if (message.delete) { %>
-                                            <form action="/clubs/<%= clubTitle %>/messages/<%= message.id %>/delete" method="POST">
-                                                <button type="submit" class="btn" title="Delete"><img src="/icons/delete.svg" alt=""></button>
-                                            </form>
+                                        <% if (hasClubAccess) { %>
+                                            <p>
+                                                By: <%= message.firstName %> <%= message.lastName %>.
+                                                From: <%= message.location %>.
+                                                On: <%= message.date %>.
+                                            </p>
                                         <% } %>
                                     </div>
                                     <div class="message-body">

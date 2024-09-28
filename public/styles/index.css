@@ -28,6 +28,12 @@ main {
     gap: 20px;
 }
 
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .nothing {
     display: flex;
     justify-content: center;
@@ -61,7 +67,8 @@ h2 {
     font-size: 1.1rem;
 }
 
-.club {
+.club,
+.message {
     display: grid;
     grid-template-rows: min-content 1fr;
     border: var(--border);
@@ -69,17 +76,24 @@ h2 {
 }
 
 .club-head,
-.club-body {
+.club-body,
+.message-head,
+.message-body {
     padding: 15px;
 }
 
+.message-head,
 .club-head {
+    background-color: #fafafa;
+    border-bottom: var(--border);
+}
+
+.club-head,
+.message-head > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 40px;
-    background-color: #fafafa;
-    border-bottom: var(--border);
 }
 
 .club-head > div > a {
@@ -92,21 +106,32 @@ h2 {
     text-decoration: underline;
 }
 
-.club-head > form > button {
+.club-head > form > button,
+.message-head > div > form > button {
     padding: 5px;
     background-color: #fafafa;
 }
 
-.club-head > form > button > img {
-    width: 20px;
+.club-head > form > button > img,
+.message-head > div > form > button > img {
+    min-width: 20px;
 }
 
-.club-body {
+.club-body,
+.message-body {
     overflow-x: hidden;
 }
 
-.club-body > p {
+.club-body > p,
+.message-body > p {
     color: var(--paragraph);
     max-height: 100px;
     overflow-y: auto;
+    font-size: 1.1rem;
+}
+
+.message-head > p {
+    margin-top: 5px;
+    color: var(--paragraph);
+    font-style: italic;
 }

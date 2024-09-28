@@ -5,6 +5,7 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import CustomError from "../helpers/customError.js";
 import { UTCDate } from "@date-fns/utc";
+import { format } from "date-fns";
 
 function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -132,16 +133,29 @@ const club = {
 
         res.render("messages", {
             hasClubAccess: await isUserClubAccessAllowed(req.user, club),
-            messages: (await messages.getByClubTitle(res.locals.clubTitle)).map(
-                (message) => {
-                    message.delete = isUserMessageDeleteAllowed(
-                        req.user,
-                        message,
-                        club,
-                    );
+            messages: await Promise.all(
+                (await messages.getByClubTitle(res.locals.clubTitle)).map(
+                    async (message) => {
+                        message.delete = isUserMessageDeleteAllowed(
+                            req.user,
+                            message,
+                            club,
+                        );
 
-                    return message;
-                },
+                        const { first_name, last_name } = await users.getById(
+                            message.user_id,
+                        );
+
+                        message.date = format(
+                            message.date,
+                            "yyy-MM-dd HH:mm 'UTC'",
+                        );
+                        message.firstName = first_name;
+                        message.lastName = last_name;
+
+                        return message;
+                    },
+                ),
             ),
         });
     }),
