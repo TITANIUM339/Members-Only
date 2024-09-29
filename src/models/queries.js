@@ -61,6 +61,20 @@ const clubs = {
             [title, description, password_hash, owner_id],
         );
     },
+    async delete(clubTitle) {
+        await Promise.all([
+            pool.query(
+                "DELETE FROM club_members WHERE club_id = (SELECT id FROM clubs WHERE title = $1)",
+                [clubTitle],
+            ),
+            pool.query(
+                "DELETE FROM messages WHERE club_id = (SELECT id FROM clubs WHERE title = $1)",
+                [clubTitle],
+            ),
+        ]);
+
+        await pool.query("DELETE FROM clubs WHERE title = $1", [clubTitle]);
+    },
 };
 
 const messages = {
