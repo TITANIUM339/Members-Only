@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     club,
+    deleteClub,
     deleteMessage,
     index,
     newClub,
@@ -34,6 +35,8 @@ router.use("/clubs/:clubTitle", validateClubRoute(), (req, res, next) => {
 });
 
 router.get("/clubs/:clubTitle", club.get);
+
+router.post("/clubs/:clubTitle/delete", deleteClub.post);
 
 router
     .route("/clubs/:clubTitle/new-message")

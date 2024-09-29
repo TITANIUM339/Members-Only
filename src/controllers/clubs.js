@@ -89,6 +89,26 @@ const checkMessageDeleteAccess = asyncHandler(async (req, res, next) => {
     next();
 });
 
+function checkClubActionAccess(action) {
+    return asyncHandler(async (req, res, next) => {
+        if (
+            !(await isUserClubActionAllowed(
+                req.user,
+                await clubs.getByTitle(res.locals.clubTitle),
+                action,
+            ))
+        ) {
+            throw new CustomError(
+                "Forbidden",
+                "What do you think you are doing?",
+                403,
+            );
+        }
+
+        next();
+    });
+}
+
 const index = {
     get: asyncHandler(async (req, res) => {
         res.render("index", {
@@ -244,4 +264,16 @@ const deleteMessage = {
     ],
 };
 
-export { index, newClub, club, newMessage, deleteMessage };
+const deleteClub = {
+    post: [
+        isAuthenticated,
+        checkClubActionAccess("delete"),
+        asyncHandler(async (req, res) => {
+            await clubs.delete(res.locals.clubTitle);
+
+            res.redirect("/");
+        }),
+    ],
+};
+
+export { index, newClub, club, newMessage, deleteMessage, deleteClub };
