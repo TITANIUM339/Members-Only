@@ -64,6 +64,14 @@ const clubs = {
 };
 
 const messages = {
+    async getById(id) {
+        const { rows } = await pool.query(
+            "SELECT * FROM messages WHERE id = $1",
+            [id],
+        );
+
+        return rows[0];
+    },
     async getByClubTitle(clubTitle) {
         const { rows } = await pool.query(
             "SELECT * FROM messages WHERE club_id = (SELECT id FROM clubs WHERE title = $1) ORDER BY date DESC",
@@ -77,6 +85,17 @@ const messages = {
             "INSERT INTO messages (title, message, date, location, user_id, club_id) VALUES ($1, $2, $3, $4, $5, $6)",
             [title, message, date, location, user_id, club_id],
         );
+    },
+    async delete(id) {
+        await pool.query("DELETE FROM messages WHERE id = $1", [id]);
+    },
+    async isFromClub(messageId, clubTitle) {
+        const { rows } = await pool.query(
+            "SELECT CASE WHEN COUNT(*) = 1 THEN TRUE ELSE FALSE END AS from_club FROM messages WHERE id = $1 AND club_id = (SELECT id FROM clubs WHERE title = $2)",
+            [messageId, clubTitle],
+        );
+
+        return rows[0].from_club;
     },
 };
 
