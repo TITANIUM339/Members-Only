@@ -54,6 +54,12 @@ function isUserMessageDeleteAllowed(user, message, club) {
     );
 }
 
+const forbiddenError = new CustomError(
+    "Forbidden",
+    "What do you think you are doing?",
+    403,
+);
+
 const checkClubAccess = asyncHandler(async (req, res, next) => {
     if (
         !(await isUserClubAccessAllowed(
@@ -61,11 +67,7 @@ const checkClubAccess = asyncHandler(async (req, res, next) => {
             await clubs.getByTitle(res.locals.clubTitle),
         ))
     ) {
-        throw new CustomError(
-            "Forbidden",
-            "What do you think you are doing?",
-            403,
-        );
+        throw forbiddenError;
     }
 
     next();
@@ -79,11 +81,7 @@ const checkMessageDeleteAccess = asyncHandler(async (req, res, next) => {
             await clubs.getByTitle(res.locals.clubTitle),
         )
     ) {
-        throw new CustomError(
-            "Forbidden",
-            "What do you think you are doing?",
-            403,
-        );
+        throw forbiddenError;
     }
 
     next();
@@ -98,11 +96,7 @@ function checkClubActionAccess(action) {
                 action,
             ))
         ) {
-            throw new CustomError(
-                "Forbidden",
-                "What do you think you are doing?",
-                403,
-            );
+            throw forbiddenError;
         }
 
         next();
