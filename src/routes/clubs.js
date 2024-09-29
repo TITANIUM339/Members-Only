@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
     club,
+    deleteMessage,
     index,
     newClub,
     newMessage,
@@ -57,5 +58,7 @@ router.use(
         next();
     },
 );
+
+router.post("/clubs/:clubTitle/messages/:messageId/delete", deleteMessage.post);
 
 export default router;
