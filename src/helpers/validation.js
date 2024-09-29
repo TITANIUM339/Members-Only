@@ -1,5 +1,5 @@
-import { body, param } from "express-validator";
-import { clubs, users } from "../models/queries.js";
+import { body, param, validationResult } from "express-validator";
+import { clubs, messages, users } from "../models/queries.js";
 
 function validateName(field, name, maxLength) {
     const nameCapital = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
@@ -139,9 +139,58 @@ function validateNewMessage() {
     ];
 }
 
+function validateMessageRoute() {
+    return [
+        param("messageId").isInt({ allow_leading_zeroes: false, min: 1 }),
+        (req, res, next) => {
+            const error = validationResult(req);
+
+            // If the previous validation failed skip querying the database.
+            if (!error.isEmpty()) {
+                next();
+                return;
+            }
+
+            const oneTimeNext = getOneTimeNext(next);
+
+            param("messageId")
+                .toInt()
+                .custom(
+                    async (
+                        value,
+                        {
+                            req: {
+                                res: {
+                                    locals: { clubTitle },
+                                },
+                            },
+                        },
+                    ) => {
+                        let isFromClub = false;
+
+                        try {
+                            isFromClub = await messages.isFromClub(
+                                value,
+                                clubTitle,
+                            );
+                        } catch (error) {
+                            oneTimeNext(error);
+                            return;
+                        }
+
+                        if (!isFromClub) {
+                            throw new Error("Message does not exist.");
+                        }
+                    },
+                )(req, res, oneTimeNext);
+        },
+    ];
+}
+
 export {
     validateSignup,
     validateNewClub,
     validateClubRoute,
     validateNewMessage,
+    validateMessageRoute,
 };
