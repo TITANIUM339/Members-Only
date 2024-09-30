@@ -81,6 +81,12 @@ const clubs = {
             [userId, clubTitle],
         );
     },
+    async leave(userId, clubTitle) {
+        await pool.query(
+            "DELETE FROM club_members WHERE user_id = $1 AND club_id = (SELECT id FROM clubs WHERE title = $2)",
+            [userId, clubTitle],
+        );
+    },
 };
 
 const messages = {
