@@ -75,6 +75,12 @@ const clubs = {
 
         await pool.query("DELETE FROM clubs WHERE title = $1", [clubTitle]);
     },
+    async join(userId, clubTitle) {
+        await pool.query(
+            "INSERT INTO club_members (user_id, club_id) VALUES ($1, (SELECT id FROM clubs WHERE title = $2))",
+            [userId, clubTitle],
+        );
+    },
 };
 
 const messages = {
