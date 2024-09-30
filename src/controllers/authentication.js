@@ -16,7 +16,9 @@ const signup = {
 
             if (!error.isEmpty()) {
                 res.status(400).render("signup", {
-                    errors: error.array().map((error) => error.msg),
+                    errors: error
+                        .array({ onlyFirstError: true })
+                        .map((error) => error.msg),
                     username: req.body.username,
                     firstName: req.body.firstName,
                     lastName: req.body.lastName,

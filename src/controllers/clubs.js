@@ -149,7 +149,9 @@ const newClub = {
 
             if (!error.isEmpty()) {
                 res.status(400).render("newClub", {
-                    errors: error.array().map((error) => error.msg),
+                    errors: error
+                        .array({ onlyFirstError: true })
+                        .map((error) => error.msg),
                     title: req.body.title,
                     description: req.body.description,
                 });
@@ -218,7 +220,9 @@ const newMessage = {
 
             if (!error.isEmpty()) {
                 res.status(400).render("newMessage", {
-                    errors: error.array().map((error) => error.msg),
+                    errors: error
+                        .array({ onlyFirstError: true })
+                        .map((error) => error.msg),
                     title: req.body.title,
                     message: req.body.message,
                 });
@@ -295,7 +299,9 @@ const joinClub = {
 
             if (!error.isEmpty()) {
                 res.status(400).render("joinClub", {
-                    errors: error.array().map((error) => error.msg),
+                    errors: error
+                        .array({ onlyFirstError: true })
+                        .map((error) => error.msg),
                 });
                 return;
             }
