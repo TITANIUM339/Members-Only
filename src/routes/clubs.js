@@ -5,6 +5,7 @@ import {
     deleteMessage,
     index,
     joinClub,
+    leaveClub,
     newClub,
     newMessage,
 } from "../controllers/clubs.js";
@@ -38,6 +39,8 @@ router.use("/clubs/:clubTitle", validateClubRoute(), (req, res, next) => {
 router.get("/clubs/:clubTitle", club.get);
 
 router.post("/clubs/:clubTitle/delete", deleteClub.post);
+
+router.post("/clubs/:clubTitle/leave", leaveClub.post);
 
 router.route("/clubs/:clubTitle/join").get(joinClub.get).post(joinClub.post);
 

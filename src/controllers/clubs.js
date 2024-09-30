@@ -307,6 +307,18 @@ const joinClub = {
     ],
 };
 
+const leaveClub = {
+    post: [
+        isAuthenticated,
+        checkClubActionAccess("leave"),
+        asyncHandler(async (req, res) => {
+            await clubs.leave(req.user.id, res.locals.clubTitle);
+
+            res.redirect("/");
+        }),
+    ],
+};
+
 export {
     index,
     newClub,
@@ -315,4 +327,5 @@ export {
     deleteMessage,
     deleteClub,
     joinClub,
+    leaveClub,
 };
