@@ -1,5 +1,6 @@
 import { body, param, validationResult } from "express-validator";
 import { clubs, messages, users } from "../models/queries.js";
+import bcrypt from "bcryptjs";
 
 function validateName(field, name, maxLength) {
     const nameCapital = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
@@ -187,10 +188,45 @@ function validateMessageRoute() {
     ];
 }
 
+function validateClubJoin() {
+    return (req, res, next) => {
+        const oneTimeNext = getOneTimeNext(next);
+
+        body("clubPassword").custom(
+            async (
+                value,
+                {
+                    req: {
+                        res: {
+                            locals: { clubTitle },
+                        },
+                    },
+                },
+            ) => {
+                let match = false;
+
+                try {
+                    const { password_hash } = await clubs.getByTitle(clubTitle);
+
+                    match = await bcrypt.compare(value, password_hash);
+                } catch (error) {
+                    oneTimeNext(error);
+                    return;
+                }
+
+                if (!match) {
+                    throw new Error("Incorrect club password.");
+                }
+            },
+        )(req, res, oneTimeNext);
+    };
+}
+
 export {
     validateSignup,
     validateNewClub,
     validateClubRoute,
     validateNewMessage,
     validateMessageRoute,
+    validateClubJoin,
 };
