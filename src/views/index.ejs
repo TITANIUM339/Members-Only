@@ -23,9 +23,7 @@
                                             <a href="/clubs/<%= club.title %>"><%= club.title %></a>
                                         </div>
                                         <% if (club.join) { %>
-                                            <form action="/clubs/<%= club.title %>/join" method="POST">
-                                                <button type="submit" class="btn" title="Join"><img src="/icons/enter.svg" alt=""></button>
-                                            </form>
+                                            <a href="/clubs/<%= club.title %>/join" class="btn" title="Join"><img src="/icons/enter.svg" alt=""></a>
                                         <% } %>
                                         <% if (club.leave) { %>
                                             <form action="/clubs/<%= club.title %>/leave" method="POST">

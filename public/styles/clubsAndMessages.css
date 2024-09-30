@@ -106,12 +106,14 @@ h2 {
     text-decoration: underline;
 }
 
+.club-head > a,
 .club-head > form > button,
 .message-head > div > form > button {
     padding: 5px;
     background-color: #fafafa;
 }
 
+.club-head > a > img,
 .club-head > form > button > img,
 .message-head > div > form > button > img {
     min-width: 20px;
