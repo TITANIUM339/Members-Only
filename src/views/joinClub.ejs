@@ -1,0 +1,22 @@
+
+<!doctype html>
+<html lang="en">
+    <%- include("./partials/head.ejs", { styles: ["form.css"], title: "Join club - Members Only" }) %>
+    <body>
+        <%- include("./partials/header.ejs") %>
+        <main>
+            <section class="form-container">
+                <h1>Join club</h1>
+                <form action="/clubs/<%= clubTitle %>/join" method="POST" class="form">
+                    <div>
+                        <label for="password">Club password *</label>
+                        <input type="password" name="clubPassword" id="password" required>
+                    </div>
+                    <%- include("./partials/formErrors.ejs") %>
+                    <button type="submit" class="btn">Join</button>
+                </form>
+            </section>
+        </main>
+        <%- include("./partials/footer.ejs") %>
+    </body>
+</html>
