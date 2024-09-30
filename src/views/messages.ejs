@@ -27,7 +27,7 @@
                                                 </form>
                                             <% } %>
                                         </div>
-                                        <% if (hasClubAccess) { %>
+                                        <% if (hasClubAccess || message.delete) { %>
                                             <p>
                                                 By: <%= message.firstName %> <%= message.lastName %>.
                                                 From: <%= message.location %>.
