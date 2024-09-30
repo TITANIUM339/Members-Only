@@ -25,7 +25,11 @@ async function isUserClubActionAllowed(user, club, action) {
             return user.admin || user.id === club.owner_id;
 
         case "join":
-            return !user.admin && user.id !== club.owner_id;
+            return (
+                !user.admin &&
+                user.id !== club.owner_id &&
+                !(await users.isMemberOfClub(user.id, club.id))
+            );
 
         case "leave":
             return await users.isMemberOfClub(user.id, club.id);
@@ -40,7 +44,7 @@ async function isUserClubAccessAllowed(user, club) {
     return (
         user.admin ||
         user.id === club.owner_id ||
-        (await users.isMemberOfClub())
+        (await users.isMemberOfClub(user.id, club.id))
     );
 }
 
