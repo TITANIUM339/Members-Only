@@ -1,4 +1,4 @@
-import { body, param, validationResult } from "express-validator";
+import { body, param } from "express-validator";
 import { clubs, messages, users } from "../models/queries.js";
 import bcrypt from "bcryptjs";
 
@@ -141,51 +141,42 @@ function validateNewMessage() {
 }
 
 function validateMessageRoute() {
-    return [
-        param("messageId").isInt({ allow_leading_zeroes: false, min: 1 }),
-        (req, res, next) => {
-            const error = validationResult(req);
+    return (req, res, next) => {
+        const oneTimeNext = getOneTimeNext(next);
 
-            // If the previous validation failed skip querying the database.
-            if (!error.isEmpty()) {
-                next();
-                return;
-            }
-
-            const oneTimeNext = getOneTimeNext(next);
-
-            param("messageId")
-                .toInt()
-                .custom(
-                    async (
-                        value,
-                        {
-                            req: {
-                                res: {
-                                    locals: { clubTitle },
-                                },
+        param("messageId")
+            .isInt({ allow_leading_zeroes: false, min: 1 })
+            .bail()
+            .toInt()
+            .custom(
+                async (
+                    value,
+                    {
+                        req: {
+                            res: {
+                                locals: { clubTitle },
                             },
                         },
-                    ) => {
-                        let isFromClub = false;
-
-                        try {
-                            isFromClub = await messages.isFromClub(
-                                value,
-                                clubTitle,
-                            );
-                        } catch (error) {
-                            oneTimeNext(error);
-                            return;
-                        }
-
-                        if (!isFromClub) {
-                            throw new Error("Message does not exist.");
-                        }
                     },
-                )(req, res, oneTimeNext);
-        },
-    ];
+                ) => {
+                    let isFromClub = false;
+
+                    try {
+                        isFromClub = await messages.isFromClub(
+                            value,
+                            clubTitle,
+                        );
+                    } catch (error) {
+                        oneTimeNext(error);
+                        return;
+                    }
+
+                    if (!isFromClub) {
+                        throw new Error("Message does not exist.");
+                    }
+                },
+            )(req, res, oneTimeNext);
+    };
 }
 
 function validateClubJoin() {
