@@ -1,5 +1,9 @@
 import { matchedData, validationResult } from "express-validator";
-import { validateNewClub, validateNewMessage } from "../helpers/validation.js";
+import {
+    validateClubJoin,
+    validateNewClub,
+    validateNewMessage,
+} from "../helpers/validation.js";
 import { clubs, messages, users } from "../models/queries.js";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
@@ -281,6 +285,25 @@ const joinClub = {
         (req, res) => {
             res.render("joinClub");
         },
+    ],
+    post: [
+        isAuthenticated,
+        checkClubActionAccess("join"),
+        validateClubJoin(),
+        asyncHandler(async (req, res) => {
+            const error = validationResult(req);
+
+            if (!error.isEmpty()) {
+                res.status(400).render("joinClub", {
+                    errors: error.array().map((error) => error.msg),
+                });
+                return;
+            }
+
+            await clubs.join(req.user.id, res.locals.clubTitle);
+
+            res.redirect(`/clubs/${res.locals.clubTitle}`);
+        }),
     ],
 };
 

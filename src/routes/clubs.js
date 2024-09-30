@@ -39,7 +39,7 @@ router.get("/clubs/:clubTitle", club.get);
 
 router.post("/clubs/:clubTitle/delete", deleteClub.post);
 
-router.route("/clubs/:clubTitle/join").get(joinClub.get);
+router.route("/clubs/:clubTitle/join").get(joinClub.get).post(joinClub.post);
 
 router
     .route("/clubs/:clubTitle/new-message")
