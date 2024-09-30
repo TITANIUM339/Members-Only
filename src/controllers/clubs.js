@@ -270,4 +270,22 @@ const deleteClub = {
     ],
 };
 
-export { index, newClub, club, newMessage, deleteMessage, deleteClub };
+const joinClub = {
+    get: [
+        isAuthenticated,
+        checkClubActionAccess("join"),
+        (req, res) => {
+            res.render("joinClub");
+        },
+    ],
+};
+
+export {
+    index,
+    newClub,
+    club,
+    newMessage,
+    deleteMessage,
+    deleteClub,
+    joinClub,
+};
