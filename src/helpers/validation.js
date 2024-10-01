@@ -44,8 +44,9 @@ function validateSignup() {
         (req, res, next) => {
             const oneTimeNext = getOneTimeNext(next);
 
-            validateTextInput("username", "username", 8).custom(
-                async (value) => {
+            validateTextInput("username", "username", 8)
+                .bail()
+                .custom(async (value) => {
                     let user;
 
                     // If the database query fails pass the error to oneTimeNext to prevent a subsequent next call by express-validator and avoid undefined behavior.
@@ -60,8 +61,7 @@ function validateSignup() {
                     if (user) {
                         throw new Error("Username already exists.");
                     }
-                },
-            )(req, res, oneTimeNext);
+                })(req, res, oneTimeNext);
         },
         validateName("firstName", "first name", 8),
         validateName("lastName", "last name", 8),
@@ -83,20 +83,22 @@ function validateNewClub() {
         (req, res, next) => {
             const oneTimeNext = getOneTimeNext(next);
 
-            validateTextInput("title", "title", 16).custom(async (value) => {
-                let club;
+            validateTextInput("title", "title", 16)
+                .bail()
+                .custom(async (value) => {
+                    let club;
 
-                try {
-                    club = await clubs.getByTitle(value);
-                } catch (error) {
-                    oneTimeNext(error);
-                    return;
-                }
+                    try {
+                        club = await clubs.getByTitle(value);
+                    } catch (error) {
+                        oneTimeNext(error);
+                        return;
+                    }
 
-                if (club) {
-                    throw new Error("Club already exists.");
-                }
-            })(req, res, oneTimeNext);
+                    if (club) {
+                        throw new Error("Club already exists.");
+                    }
+                })(req, res, oneTimeNext);
         },
         body("description")
             .optional()
