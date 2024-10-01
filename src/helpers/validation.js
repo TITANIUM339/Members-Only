@@ -183,33 +183,38 @@ function validateClubJoin() {
     return (req, res, next) => {
         const oneTimeNext = getOneTimeNext(next);
 
-        body("clubPassword").custom(
-            async (
-                value,
-                {
-                    req: {
-                        res: {
-                            locals: { clubTitle },
+        body("clubPassword")
+            .notEmpty()
+            .withMessage("Must provide a club password.")
+            .bail()
+            .custom(
+                async (
+                    value,
+                    {
+                        req: {
+                            res: {
+                                locals: { clubTitle },
+                            },
                         },
                     },
+                ) => {
+                    let match = false;
+
+                    try {
+                        const { password_hash } =
+                            await clubs.getByTitle(clubTitle);
+
+                        match = await bcrypt.compare(value, password_hash);
+                    } catch (error) {
+                        oneTimeNext(error);
+                        return;
+                    }
+
+                    if (!match) {
+                        throw new Error("Incorrect club password.");
+                    }
                 },
-            ) => {
-                let match = false;
-
-                try {
-                    const { password_hash } = await clubs.getByTitle(clubTitle);
-
-                    match = await bcrypt.compare(value, password_hash);
-                } catch (error) {
-                    oneTimeNext(error);
-                    return;
-                }
-
-                if (!match) {
-                    throw new Error("Incorrect club password.");
-                }
-            },
-        )(req, res, oneTimeNext);
+            )(req, res, oneTimeNext);
     };
 }
 
