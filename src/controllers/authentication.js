@@ -1,4 +1,4 @@
-import { validateSignup } from "../helpers/validation.js";
+import { validateLogin, validateSignup } from "../helpers/validation.js";
 import { validationResult, matchedData } from "express-validator";
 import asyncHandler from "express-async-handler";
 import { users } from "../models/queries.js";
@@ -66,31 +66,46 @@ const login = {
     get(req, res) {
         res.render("login");
     },
-    post(req, res, next) {
-        passport.authenticate("local", (err, user, info) => {
-            if (err) {
-                next(err);
-                return;
-            }
+    post: [
+        validateLogin(),
+        (req, res, next) => {
+            const error = validationResult(req);
 
-            if (!user) {
+            if (!error.isEmpty()) {
                 res.status(401).render("login", {
-                    errors: [info.message],
+                    errors: error
+                        .array({ onlyFirstError: true })
+                        .map((error) => error.msg),
                     username: req.body.username,
                 });
                 return;
             }
 
-            req.login(user, (err) => {
+            passport.authenticate("local", (err, user, info) => {
                 if (err) {
                     next(err);
                     return;
                 }
 
-                res.redirect("/");
-            });
-        })(req);
-    },
+                if (!user) {
+                    res.status(401).render("login", {
+                        errors: [info.message],
+                        username: req.body.username,
+                    });
+                    return;
+                }
+
+                req.login(user, (err) => {
+                    if (err) {
+                        next(err);
+                        return;
+                    }
+
+                    res.redirect("/");
+                });
+            })(req);
+        },
+    ],
 };
 
 const logout = {

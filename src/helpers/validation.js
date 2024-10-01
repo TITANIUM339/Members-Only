@@ -213,6 +213,13 @@ function validateClubJoin() {
     };
 }
 
+function validateLogin() {
+    return [
+        body("username").notEmpty().withMessage("Must provide a username."),
+        body("password").notEmpty().withMessage("Must provide a password."),
+    ];
+}
+
 export {
     validateSignup,
     validateNewClub,
@@ -220,4 +227,5 @@ export {
     validateNewMessage,
     validateMessageRoute,
     validateClubJoin,
+    validateLogin,
 };
