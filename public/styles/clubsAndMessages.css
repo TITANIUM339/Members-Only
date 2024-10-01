@@ -86,6 +86,8 @@ h2 {
 .club-head {
     background-color: #fafafa;
     border-bottom: var(--border);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .club-head,
