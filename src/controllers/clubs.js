@@ -237,7 +237,7 @@ const newMessage = {
 
             const location =
                 country || city
-                    ? `${country || ""} ${city || ""}`.trimEnd()
+                    ? `${country || ""} ${city || ""}`.trim()
                     : "Unknown";
 
             const { id: clubId } = await clubs.getByTitle(res.locals.clubTitle);
